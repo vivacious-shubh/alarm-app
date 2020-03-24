@@ -1,0 +1,98 @@
+<p-toast key="msg" position="top-right"></p-toast>
+<p-toast position="center" key="c" (onClose)="onReject()" [modal]="true" [baseZIndex]="5000">
+    <ng-template let-message pTemplate="message">
+        <div style="text-align: center">
+            <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+            <h3>Leaving this Page</h3>
+            <p>Are you sure you want to leave this page?</p>
+        </div>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-6">
+                <button type="button" pButton (click)="onConfirm()" label="Yes" class="ui-button-success"></button>
+            </div>
+            <div class="ui-g-6">
+                <button type="button" pButton (click)="onReject()" label="No" class="ui-button-secondary"></button>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
+<div class="p-grid">
+    <div class="p-col-12">
+        <div class="p-grid app-header">
+            <div class="p-col-fixed">
+                <span>Blueplanet</span>
+            </div>
+            <div class="p-col">
+                <div class="p-grid p-justify-end">
+                    <div class="p-col-fixed">
+                        <span>Welcome John</span>
+                        <i class="pi pi-user"></i> |
+                    </div>
+                    <div class="p-col-fixed">
+                        <span class="logout" (click)="onLogout()">Logout</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-col-12">
+        <div class="p-grid">
+            <div class="p-col-1">
+                <button pButton type="button" label="Home" ></button>
+            </div>
+            <div class="p-col-2 p-offset-8">
+                <p-dropdown [options]="menuOptions" [(ngModel)]="selectedOption" optionLabel="name"
+                placeholder="Menu" (onChange)="menuOptionChanged($event)"></p-dropdown>
+            </div>
+            <div class="p-col-1">
+                <button pButton type="button" label="Back" ></button>
+            </div>
+        </div>
+    </div>
+    <div class="p-col-12">
+        <div class="p-grid">
+            <div class="p-col-12">
+                <h3>Alarm View</h3>
+            </div>
+            <div class="p-col-12">
+                <p-tabView>
+                    <ng-container *ngFor="let tab of tabData">
+                        <p-tabPanel header="{{tab.name}}">
+                            <p-table [value]="tab.data">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 3em">
+                                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        </th>
+                                        <th>Severity</th>
+                                        <th>Description</th>
+                                        <th>Node type</th>
+                                        <th>Clearable</th>
+                                        <th>State</th>
+                                        <th>Raise type</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData>
+                                    <tr>
+                                        <td>
+                                            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                                        </td>
+                                        <td [ngClass]='tab.highlight && getClass(rowData)'>{{rowData['condition-severity']}}</td>
+                                        <td>{{rowData['additional-text']}}</td>
+                                        <td>{{rowData['node-type']}}</td>
+                                        <td>{{rowData['manual-clearable'] ? 'Yes' : 'No'}}</td>
+                                        <td>{{rowData['state']}}</td>
+                                        <td>{{rowData['last-raise-time']}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </p-tabPanel>
+                    </ng-container>
+                </p-tabView>
+            </div>
+        </div>        
+    </div>
+    <div class="p-col-12">
+        <p-chart type="pie" [data]="chartData"></p-chart>
+    </div>
+</div>
